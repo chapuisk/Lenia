@@ -10,7 +10,7 @@ model lenia
 
 global {
 	
-	int L <- 30;
+	int L <- 48;
 	int maxval <- 255;
 	
 	geometry shape <- square(L);
@@ -123,8 +123,8 @@ species lenia {
 			loop y from:0 to:space.rows-1 {
 				loop l over:filters.keys {
 					field f <- filters[l].from_mask_to_field({x,y});
-					float u <- sum(f / (sum(f)*1/R^2) * (space[{x,y}]/maxval + copy(l.space)/maxval)) * 1/R^2;
-					write u;
+					field kn <- f * copy(l.space)/maxval;
+					float u <- (space[{x,y}]/maxval + sum(kn)) / R^2;
 					me[l][{x,y}] <- activation(u);
 				}
 				
